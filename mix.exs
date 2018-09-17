@@ -28,7 +28,7 @@ defmodule Klaviyo.MixProject do
     ]
   end
 
-  defp project do
+  defp package do
     [
       description: "Elixir client for the Klaviyo REST API",
       maintainers: ["Anthony Smith"],
