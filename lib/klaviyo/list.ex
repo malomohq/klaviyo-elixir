@@ -91,7 +91,7 @@ defmodule Klaviyo.List do
   end
 
   @doc """
-  All lists for an account.
+  Get a list of all lists.
   """
   @spec list() :: Klaviyo.Operation.t()
   def list() do
@@ -116,7 +116,7 @@ defmodule Klaviyo.List do
   end
 
   @doc """
-  Retrieve information for a list.
+  Retrieve information about a list.
   """
   @spec retrieve(String.t()) :: Klaviyo.Operation.t()
   def retrieve(id) do
