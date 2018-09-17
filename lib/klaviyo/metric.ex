@@ -1,4 +1,10 @@
 defmodule Klaviyo.Metric do
+  @moduledoc """
+  Provides support for the Klaviyo Metrics API.
+
+  This module provides access to all known endpoints of the v1 Metrics API.
+  """
+
   @doc """
   List of all metrics.
   """

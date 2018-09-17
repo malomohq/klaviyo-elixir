@@ -1,4 +1,10 @@
 defmodule Klaviyo.List do
+  @moduledoc """
+  Provides support for the Klaviyo Lists API.
+
+  This module provides access to all known endpoints of the v2 Lists API.
+  """
+
   @doc """
   Add profiles to a list.
   """

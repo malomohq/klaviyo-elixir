@@ -1,4 +1,10 @@
 defmodule Klaviyo.Person do
+  @moduledoc """
+  Provides support for the Klaviyo Profiles API.
+
+  This module provides access to all known endpoints of the v1 Profiles API.
+  """
+
   @doc """
   Add or update one or more attributes of a person.
   """

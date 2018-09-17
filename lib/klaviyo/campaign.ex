@@ -1,4 +1,10 @@
 defmodule Klaviyo.Campaign do
+  @moduledoc """
+  Provides support for the Klaviyo Campaign API.
+
+  This module provides access to all known endpoints of the v1 Campaigns API.
+  """
+
   @doc """
   Cancel a campaign.
   """

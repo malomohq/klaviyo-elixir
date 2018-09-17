@@ -1,4 +1,10 @@
 defmodule Klaviyo.Template do
+  @moduledoc """
+  Provides support for the Klaviyo Templates API.
+
+  This module provides access to all known endpoints of the v1 Templates API.
+  """
+
   @doc """
   Create a copy of a template.
   """
