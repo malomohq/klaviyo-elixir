@@ -19,7 +19,8 @@ defmodule Klaviyo.MixProject do
 
   defp deps do
     [
-      {:dialyxir, "~> 1.0.0-rc", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.0.0-rc", only: [:dev, :test], runtime: false},
+      {:hackney, "~> 1.14", optional: true}
     ]
   end
 end
