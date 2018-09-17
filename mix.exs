@@ -8,7 +8,8 @@ defmodule Klaviyo.MixProject do
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      dialyzer: [plt_add_apps: [:hackney]]
+      dialyzer: [plt_add_apps: [:hackney]],
+      package: package()
     ]
   end
 
@@ -24,6 +25,17 @@ defmodule Klaviyo.MixProject do
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:hackney, "~> 1.14", optional: true},
       {:jason, "~> 1.1", optional: true}
+    ]
+  end
+
+  defp project do
+    [
+      description: "Elixir client for the Klaviyo REST API",
+      maintainers: ["Anthony Smith"],
+      licenses: ["MIT"],
+      links: %{
+        GitHub: "https://github.com/malomohq/klaviyo-elixir"
+      }
     ]
   end
 end
