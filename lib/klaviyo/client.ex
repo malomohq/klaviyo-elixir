@@ -11,10 +11,10 @@ defmodule Klaviyo.Client do
   @callback request(
               method :: http_method_t,
               url :: String.t(),
-              req_body :: binary,
               headers :: [{binary, binary}],
+              req_body :: binary,
               client_opts :: term
             ) ::
-              {:ok, %{status_code: pos_integer, body: binary}}
-              | {:error, %{reason: String.t()}}
+              {:ok, %{body: binary, status_code: pos_integer}}
+              | {:error, reason :: binary}
 end
