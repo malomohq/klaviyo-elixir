@@ -11,6 +11,9 @@ defmodule Klaviyo.Campaign do
     }
   end
 
+  @doc """
+  Create a copy of a campaign.
+  """
   @spec clone(String.t(), map) :: Klaviyo.Operation.t()
   def clone(id, params) do
     %Klaviyo.Operation{
