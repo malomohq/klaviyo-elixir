@@ -70,4 +70,57 @@ defmodule Klaviyo do
       path: "track-once"
     }
   end
+
+  @doc """
+  List of all metrics.
+  """
+  @spec metrics_list(map) :: Klaviyo.Operation.t()
+  def metrics_list(params \\ %{}) do
+    %Klaviyo.Operation{
+      auth: :private,
+      http_method: :get,
+      params: params,
+      path: "v1/metrics"
+    }
+  end
+
+  @doc """
+  Batched timeline of all events.
+  """
+  @spec metrics_timeline(map) :: Klaviyo.Operation.t()
+  def metrics_timeline(params \\ %{}) do
+    %Klaviyo.Operation{
+      auth: :private,
+      http_method: :get,
+      params: params,
+      path: "v1/metrics/timeline"
+    }
+  end
+
+  @doc """
+  Batched timeline of a single metric type.
+  """
+  @spec metric_timeline(String.t(), map) :: Klaviyo.Operation.t()
+  def metric_timeline(id, params \\ %{}) do
+    %Klaviyo.Operation{
+      auth: :private,
+      http_method: :get,
+      params: params,
+      path: "v1/metrics/#{id}/timeline"
+    }
+  end
+
+
+  @doc """
+  Export event data.
+  """
+  @spec metric_export(String.t(), map) :: Klaviyo.Operation.t()
+  def metric_export(id, params \\ %{}) do
+    %Klaviyo.Operation{
+      auth: :private,
+      http_method: :get,
+      params: params,
+      path: "v1/metrics/#{id}/export"
+    }
+  end
 end
