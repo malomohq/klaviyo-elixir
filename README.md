@@ -73,7 +73,7 @@ Klaviyo provides different authentication requirements depending on whether you
 are making a request to a public API (Track and Identify) or a private API
 (Metrics, Profiles, Lists, Campaigns and Templates).
 
-This library will handle this for you transparently. The only thing you need to
+This library will handle this for you automatically. The only thing you need to
 do is provide the appropriate API key to the `:private_api_key` and
 `:public_api_key` configuration options.
 
