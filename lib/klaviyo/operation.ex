@@ -129,7 +129,7 @@ defmodule Klaviyo.Operation do
         {:error, %{}}
 
       _otherwise ->
-        {:ok, json_codec.decode!(body)}
+        {:error, json_codec.decode!(body)}
     end
   end
 
