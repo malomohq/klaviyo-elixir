@@ -78,10 +78,11 @@ defmodule Klaviyo.Operation do
     "#{url}/#{path}"
   end
 
-  defp put_query(url, %{base64_encode_query: true, http_method: :get, params: params}, %{json_codec: json_codec}) when params != %{} do
+  defp put_query(url, %{base64_encode_query: true, http_method: :get, params: params}, config)
+       when params != %{} do
     data =
       params
-      |> json_codec.encode!()
+      |> config.json_codec.encode!()
       |> Base.encode64()
 
     "#{url}?data=#{data}"
