@@ -21,7 +21,7 @@ defmodule Klaviyo do
   This functions takes an optional second parameter of configuration overrides.
   This is useful if you want to have different configuration per request.
   """
-  @spec request(Klaviyo.Operation.t(), Keyword.t()) ::
+  @spec request(Klaviyo.Operation.t(), config_t) ::
           :success | :failure | {:ok, map} | {:error, map | String.t()}
   def request(operation, config_overrides \\ []) do
     config = Klaviyo.Config.new(config_overrides)
@@ -110,7 +110,6 @@ defmodule Klaviyo do
     }
   end
 
-
   @doc """
   Export event data.
   """
@@ -121,6 +120,45 @@ defmodule Klaviyo do
       http_method: :get,
       params: params,
       path: "v1/metrics/#{id}/export"
+    }
+  end
+
+  @doc """
+  Add or update one or more attributes of a person.
+  """
+  @spec person_update(String.t(), map) :: Klaviyo.Operation.t()
+  def person_update(id, params) do
+    %Klaviyo.Operation{
+      auth: :private,
+      http_method: :put,
+      params: params,
+      path: "v1/person/#{id}"
+    }
+  end
+
+  @doc """
+  Batched timeline of all events for a person.
+  """
+  @spec person_metrics_timeline(String.t(), map) :: Klaviyo.Operation.t()
+  def person_metrics_timeline(id, params \\ %{}) do
+    %Klaviyo.Operation{
+      auth: :private,
+      http_method: :get,
+      params: params,
+      path: "v1/person/#{id}/metrics/timeline"
+    }
+  end
+
+  @doc """
+  Batched timeline of a single metric type for a person.
+  """
+  @spec person_metric_timeline(String.t(), String.t(), map) :: Klaviyo.Operation.t()
+  def person_metric_timeline(person_id, metric_id, params \\ %{}) do
+    %Klaviyo.Operation{
+      auth: :private,
+      http_method: :get,
+      params: params,
+      path: "v1/person/#{person_id}/metrics/#{metric_id}/timeline"
     }
   end
 end
