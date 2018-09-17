@@ -18,6 +18,8 @@ defmodule Klaviyo.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:dialyxir, "~> 1.0.0-rc", only: [:dev, :test], runtime: false}
+    ]
   end
 end
