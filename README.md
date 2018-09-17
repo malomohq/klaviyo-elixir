@@ -17,8 +17,8 @@ end
 ```
 
 Out of the box, this library provides support for `hackney` as the HTTP client
-and `jason` and `poison` as the JSON codecs. If you plan to utilize any of these
-you will need to add them as dependencies to your project.
+and `jason` and `poison` as the JSON codecs. If you plan to utilize these you
+will need to add them as dependencies to your project.
 
 ## Making Requests
 
