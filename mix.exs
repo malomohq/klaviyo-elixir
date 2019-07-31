@@ -18,6 +18,11 @@ defmodule Klaviyo.MixProject do
   end
 
   defp deps do
-    []
+    [
+      { :hackney,  "~> 1.15", optional: true },
+      { :jason,    "~> 1.1", optional: true },
+      { :dialyxir, "~> 1.0.0-rc", only: :dev, runtime: false },
+      { :ex_doc,   ">= 0.0.0", only: :dev, runtime: false }
+    ]
   end
 end
