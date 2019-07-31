@@ -16,7 +16,7 @@ defmodule Klaviyo.Config do
             http_client: Klaviyo.Client.Hackney,
             http_client_opts: [],
             json_codec: Jason,
-            path: "api",
+            path: "/api",
             port: nil,
             private_api_key: nil,
             protocol: "https",
