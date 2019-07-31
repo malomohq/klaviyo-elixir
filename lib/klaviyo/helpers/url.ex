@@ -2,12 +2,17 @@ defmodule Klaviyo.Helpers.URL do
   alias Klaviyo.{ Helpers }
 
   def new(operation, config) do
-    %URI{ path: config.path, port: config.port, scheme: config.protocol }
-    |> Map.put(:path, config.path)
+    %URI{}
+    |> Map.put(:host, config.host)
     |> Map.put(:port, config.port)
     |> Map.put(:scheme, config.protocol)
+    |> put_path(operation, config)
     |> put_query(operation, config)
     |> URI.to_string()
+  end
+
+  defp put_path(uri, operation, config) do
+    Map.put(uri, :path, "#{config.path}/#{operation.path}")
   end
 
   defp put_query(uri, %{ auth: :public, method: :get } = operation, config) do
