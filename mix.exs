@@ -8,6 +8,7 @@ defmodule Klaviyo.MixProject do
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      dialyzer: [plt_add_apps: [:hackney]],
       package: package()
     ]
   end
