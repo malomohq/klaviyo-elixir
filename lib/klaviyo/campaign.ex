@@ -42,7 +42,7 @@ defmodule Klaviyo.Campaign do
   end
 
   @doc """
-  Creates a copy of a campaign.
+  Create a copy of a campaign.
 
   Campaigns are created as drafts.
   """
