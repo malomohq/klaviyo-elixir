@@ -70,7 +70,7 @@ defmodule Klaviyo.List do
   end
 
   @doc """
-  Create a new list.
+  Create a list.
   """
   @spec create(map) :: Klaviyo.Operation.t()
   def create(params) do
