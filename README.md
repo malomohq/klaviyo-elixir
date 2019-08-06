@@ -53,13 +53,13 @@ Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
 
 ## Supported Endpoint Functions
 
-*Server-Side*
+**Server-Side**
 
 * `Klaviyo.identify/1`
 * `Klaviyo.track/1`
 * `Klaviyo.track_once/1`
 
-*Campaign*
+**Campaign**
 
 * `Klaviyo.Campaign.all/1`
 * `Klaviyo.Campaign.all_recipients/1`
@@ -71,7 +71,7 @@ Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
 * `Klaviyo.Campaign.send/1`
 * `Klaviyo.Campaign.update/2`
 
-*List*
+**List**
 
 * `Klaviyo.List.add_as_member/2`
 * `Klaviyo.List.add_as_subscriber/2`
@@ -87,21 +87,21 @@ Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
 * `Klaviyo.List.remove_as_subscriber/2`
 * `Klaviyo.List.update/2`
 
-*Metric*
+**Metric**
 
 * `Klaviyo.Metric.all/1`
 * `Klaviyo.Metric.export/2`
 * `Klaviyo.Metric.timeline/1`
 * `Klaviyo.Metric.timeline/2`
 
-*Person*
+**Person**
 
 * `Klaviyo.Person.get/1`
 * `Klaviyo.Person.timeline/2`
 * `Klaviyo.Person.timeline_for_metric/3`
 * `Klaviyo.Person.update/2`
 
-*Template*
+**Template**
 
 * `Klaviyo.Template.all/0`
 * `Klaviyo.Template.clone/2`
