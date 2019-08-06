@@ -3,7 +3,7 @@ defmodule Klaviyo.Metric do
   Returns a list of all metrics.
   """
   @spec all(map) :: Klaviyo.Operation.t()
-  def all(params) do
+  def all(params \\ %{}) do
     %Klaviyo.Operation{
       auth: :private,
       method: :get,
@@ -17,7 +17,7 @@ defmodule Klaviyo.Metric do
   properties.
   """
   @spec export(String.t(), map) :: Klaviyo.Operation.t()
-  def export(metric_id, params) do
+  def export(metric_id, params \\ %{}) do
     %Klaviyo.Operation{
       auth: :private,
       method: :get,
@@ -30,7 +30,7 @@ defmodule Klaviyo.Metric do
   Returns a batched timeline of all events.
   """
   @spec timeline(map) :: Klaviyo.Operation.t()
-  def timeline(params) do
+  def timeline(params \\ %{}) do
     %Klaviyo.Operation{
       auth: :private,
       method: :get,
@@ -43,7 +43,7 @@ defmodule Klaviyo.Metric do
   Returns a batched timeline for one specific type of metric.
   """
   @spec timeline(String.t(), map) :: Klaviyo.Operation.t()
-  def timeline(metric_id, params) do
+  def timeline(metric_id, params \\ %{}) do
     %Klaviyo.Operation{
       auth: :private,
       method: :get,
