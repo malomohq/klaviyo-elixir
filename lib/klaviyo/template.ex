@@ -64,6 +64,10 @@ defmodule Klaviyo.Template do
     }
   end
 
+  @doc """
+  Renders and sends an email template.
+  """
+  @spec send(String.t(), map) :: Klaviyo.Operation.t()
   def send(template_id, params) do
     %Klaviyo.Operation{
       auth: :private,
