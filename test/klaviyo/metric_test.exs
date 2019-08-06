@@ -38,7 +38,7 @@ defmodule Klaviyo.MetricTest do
     } = Klaviyo.Metric.timeline(p)
   end
 
-  test "timeline/2" do
+  test "timeline_for_type/2" do
     id = "1"
 
     p = %{ a: "b" }
@@ -50,6 +50,6 @@ defmodule Klaviyo.MetricTest do
       method: :get,
       params: ^p,
       path: ^path
-    } = Klaviyo.Metric.timeline(id, p)
+    } = Klaviyo.Metric.timeline_for_type(id, p)
   end
 end

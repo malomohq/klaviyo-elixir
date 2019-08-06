@@ -13,8 +13,9 @@ defmodule Klaviyo.Metric do
   end
 
   @doc """
-  Export event data. Optionally filtering and segmented on available event
-  properties.
+  Export event data.
+
+  Optionally filtering and segmented on available event properties.
   """
   @spec export(String.t(), map) :: Klaviyo.Operation.t()
   def export(metric_id, params \\ %{}) do
@@ -42,8 +43,8 @@ defmodule Klaviyo.Metric do
   @doc """
   Returns a batched timeline for one specific type of metric.
   """
-  @spec timeline(String.t(), map) :: Klaviyo.Operation.t()
-  def timeline(metric_id, params \\ %{}) do
+  @spec timeline_for_type(String.t(), map) :: Klaviyo.Operation.t()
+  def timeline_for_type(metric_id, params \\ %{}) do
     %Klaviyo.Operation{
       auth: :private,
       method: :get,

@@ -28,7 +28,7 @@ defmodule Klaviyo.PersonTest do
     } = Klaviyo.Person.timeline(id, p)
   end
 
-  test "timeline/3" do
+  test "timeline_for_type/3" do
     person_id = "1"
     metric_id = "2"
 
@@ -41,7 +41,7 @@ defmodule Klaviyo.PersonTest do
       method: :get,
       params: ^p,
       path: ^path
-    } = Klaviyo.Person.timeline(person_id, metric_id, p)
+    } = Klaviyo.Person.timeline_for_type(person_id, metric_id, p)
   end
 
   test "update/2" do

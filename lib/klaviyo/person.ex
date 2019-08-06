@@ -15,7 +15,7 @@ defmodule Klaviyo.Person do
   Returns a batched timeline of all events.
   """
   @spec timeline(String.t(), map) :: Klaviyo.Operation.t()
-  def timeline(person_id, params) do
+  def timeline(person_id, params \\ %{}) do
     %Klaviyo.Operation{
       auth: :private,
       method: :get,
@@ -27,7 +27,8 @@ defmodule Klaviyo.Person do
   @doc """
   Reeturns a batched timline of all events for one specific type of metric.
   """
-  def timeline(person_id, metric_id, params) do
+  @spec timeline_for_type(String.t(), String.t(), map) :: Klaviyo.Operation.t()
+  def timeline_for_type(person_id, metric_id, params \\ %{}) do
     %Klaviyo.Operation{
       auth: :private,
       method: :get,
