@@ -57,6 +57,7 @@ Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
 * `Klaviyo.track/1`
 * `Klaviyo.track_once/1`
 
+
 * `Klaviyo.Campaign.all/1`
 * `Klaviyo.Campaign.all_recipients/1`
 * `Klaviyo.Campaign.cancel/1`
@@ -66,6 +67,7 @@ Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
 * `Klaviyo.Campaign.schedule/2`
 * `Klaviyo.Campaign.send/1`
 * `Klaviyo.Campaign.update/2`
+
 
 * `Klaviyo.List.add_as_member/2`
 * `Klaviyo.List.add_as_subscriber/2`
@@ -81,15 +83,18 @@ Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
 * `Klaviyo.List.remove_as_subscriber/2`
 * `Klaviyo.List.update/2`
 
+
 * `Klaviyo.Metric.all/1`
 * `Klaviyo.Metric.export/2`
 * `Klaviyo.Metric.timeline/1`
 * `Klaviyo.Metric.timeline/2`
 
+
 * `Klaviyo.Person.get/1`
 * `Klaviyo.Person.timeline/2`
 * `Klaviyo.Person.timeline_for_metric/3`
 * `Klaviyo.Person.update/2`
+
 
 * `Klaviyo.Template.all/0`
 * `Klaviyo.Template.clone/2`
