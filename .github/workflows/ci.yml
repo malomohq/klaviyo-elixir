@@ -5,5 +5,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: mix deps.get
-        uses: docker://elixir:1.9-alpine
+      - uses: docker://elixir:1.9-alpine
+        run: mix deps.get
