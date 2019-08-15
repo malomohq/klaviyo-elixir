@@ -17,12 +17,12 @@ jobs:
       - run: docker pull elixir:${{ matrix.elixir-version }}-alpine
 
       - run: |
-          read -r -d '' cmd <<- EOM
+          cmd='
             mix local.hex --force
             mix local.rebar --force
             mix deps.get
             mix test
-          EOM
+          '
 
           docker run \
             --mount type=bind,src=`pwd`,target=/usr/src/klaviyo \
