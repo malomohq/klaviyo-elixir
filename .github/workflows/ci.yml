@@ -6,4 +6,4 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: docker://elixir:1.9-alpine
-        run: mix deps.get
+      - run: mix deps.get
