@@ -4,7 +4,7 @@ jobs:
   test:
     strategy:
       matrix:
-        elixir-version: [1.9]
+        elixir_version: [1.9]
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
@@ -14,7 +14,7 @@ jobs:
 
       - uses: actions/docker/cli@master
 
-      - uses: docker://elixir:${{ matrix.elixir-version }}-alpine
+      - uses: docker://elixir:${{ matrix.elixir_version }}-alpine
 
       - run: |
           read -r -d '' cmd <<- EOM
@@ -24,4 +24,4 @@ jobs:
             mix test
           EOM
 
-          docker run --mount type=bind,src=`pwd`,target=/usr/src/klaviyo -w /usr/src/klaviyo elixir:${{ matrix.elixir-version }}-alpine /bin/ash -c $cmd
+          docker run --mount type=bind,src=`pwd`,target=/usr/src/klaviyo -w /usr/src/klaviyo elixir:${{ matrix.elixir_version }}-alpine /bin/ash -c $cmd
