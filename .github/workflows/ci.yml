@@ -27,4 +27,4 @@ jobs:
           docker run \
             --mount type=bind,src=`pwd`,target=/usr/src/klaviyo \
             -w /usr/src/klaviyo elixir:${{ matrix.elixir-version }}-alpine \
-            /bin/ash -c $cmd
+            /bin/ash -c "$cmd"
