@@ -7,4 +7,4 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/docker/cli@master
       - uses: docker://elixir:1.9-alpine
-      - run: docker run --mount type=bind,src=`pwd`,target=/usr/src/klaviyo -w /usr/src/klaviyo mix deps.get 
+      - run: docker run --mount type=bind,src=`pwd`,target=/usr/src/klaviyo -w /usr/src/klaviyo elixir:1.9-alpine mix deps.get 
