@@ -1,0 +1,9 @@
+name: CI
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: mix deps.get
+        uses: docker://elixir:1.9-alpine
