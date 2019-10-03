@@ -35,6 +35,7 @@ defmodule Klaviyo.MixProject do
       licenses: ["MIT"],
       links: %{
         GitHub: "https://github.com/malomohq/klaviyo-elixir"
+        "Made by Malomo - Post-purchase experiences that customers love": "https://gomalomo.com"
       }
     ]
   end
