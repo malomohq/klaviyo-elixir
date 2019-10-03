@@ -4,11 +4,11 @@ defmodule Klaviyo.Client do
   """
 
   @type response_t ::
-                   %{
-                     body: binary,
-                     headers: Klaviyo.http_headers_t(),
-                     status_code: pos_integer
-                   }
+          %{
+            body: binary,
+            headers: Klaviyo.http_headers_t(),
+            status_code: pos_integer
+          }
 
   @callback request(
               method :: Klaviyo.http_method_t(),
