@@ -4,7 +4,7 @@ defmodule Klaviyo.MixProject do
   def project do
     [
       app: :klaviyo,
-      version: "2.0.1",
+      version: "2.1.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
