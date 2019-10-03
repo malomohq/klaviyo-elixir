@@ -5,18 +5,12 @@ defmodule Klaviyo do
 
   @type http_method_t :: :delete | :get | :post | :put
 
-  @type http_response_t ::
-          %{
-            body: binary,
-            headers: http_headers_t,
-            status_code: pos_integer
-          }
+  @type response_t :: { :ok, Response.t() } | { :error, any }
 
   @doc """
   Makes a request to the Klaviyo API.
   """
-  @spec request(Operation.t(), Config.t()) ::
-        { :ok, Response.t() } | { :error, Response.t() | any }
+  @spec request(Operation.t(), Config.t()) :: response_t
   def request(operation, config) do
     Request.send(operation, Config.new(config))
   end

@@ -7,7 +7,7 @@ defmodule Klaviyo.Client.Hackney do
           Klaviyo.http_headers_t(),
           String.t(),
           any
-        ) :: { :ok, Klaviyo.http_response_t() } | { :error, any }
+        ) :: { :ok, Klaviyo.Client.response_t() } | { :error, any }
   def request(method, url, headers, body, opts) do
     opts = opts ++ [:with_body]
 

@@ -11,7 +11,7 @@ defmodule Klaviyo.Response do
 
   defstruct [body: nil, headers: nil, private: %{}, status_code: nil]
 
-  @spec new(Klaviyo.http_response_t(), map, Config.t()) :: t
+  @spec new(Klaviyo.Client.response_t(), map, Config.t()) :: t
   def new(response, private, config) do
     body =
       response
