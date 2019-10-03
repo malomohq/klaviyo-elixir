@@ -50,6 +50,12 @@ Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
 * `:protocol` - HTTP protocol used when making a request. Defaults to `https`.
 * `:public_api_key` - the Klaviyo public API key used when making a request to
                       the track and identify endpoints
+* `:retry` - a boolean to determine whether to retry a request on server error
+            (5xx errors) or client errors (e.g. `{:error, :timeout}`). Defaults
+            to `false`.
+* `:retry_opts` - additional options used when performing retries. Defaults to
+                  `[]`.
+  * `:max_attempts` - the maximum number of retries to make. Defaults to 3.
 
 ## Supported Endpoint Functions
 

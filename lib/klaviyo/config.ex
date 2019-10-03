@@ -9,7 +9,9 @@ defmodule Klaviyo.Config do
             port: pos_integer,
             private_api_key: String.t(),
             protocol: String.t(),
-            public_api_key: String.t()
+            public_api_key: String.t(),
+            retry: boolean,
+            retry_opts: Keyword.t()
           }
 
   defstruct host: "a.klaviyo.com",
@@ -20,7 +22,9 @@ defmodule Klaviyo.Config do
             port: nil,
             private_api_key: nil,
             protocol: "https",
-            public_api_key: nil
+            public_api_key: nil,
+            retry: false,
+            retry_opts: []
 
   @spec new(map) :: t
   def new(overrides \\ %{}), do: Map.merge(%__MODULE__{}, overrides)

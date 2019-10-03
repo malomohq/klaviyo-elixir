@@ -1,4 +1,6 @@
 defmodule Klaviyo do
+  alias Klaviyo.{ Config, Operation, Request, Response }
+
   @type http_headers_t :: [{ String.t(), String.t() }]
 
   @type http_method_t :: :delete | :get | :post | :put
@@ -13,18 +15,18 @@ defmodule Klaviyo do
   @doc """
   Makes a request to the Klaviyo API.
   """
-  @spec request(Klaviyo.Operation.t(), Klaviyo.Config.t()) ::
-        { :ok, Klaviyo.Response.t() } | { :error, Klaviyo.Response.t() | any }
+  @spec request(Operation.t(), Config.t()) ::
+        { :ok, Response.t() } | { :error, Response.t() | any }
   def request(operation, config) do
-    Klaviyo.Operation.perform(operation, Klaviyo.Config.new(config))
+    Request.send(operation, Config.new(config))
   end
 
   @doc """
   Track properties about an individual without tracking an associated event.
   """
-  @spec identify(map) :: Klaviyo.Operation.t()
+  @spec identify(map) :: Operation.t()
   def identify(params) do
-    %Klaviyo.Operation{
+    %Operation{
       auth: :public,
       method: :get,
       params: params,
@@ -35,9 +37,9 @@ defmodule Klaviyo do
   @doc """
   Track when someone takes an action or does something.
   """
-  @spec track(map) :: Klaviyo.Operation.t()
+  @spec track(map) :: Operation.t()
   def track(params) do
-    %Klaviyo.Operation{
+    %Operation{
       auth: :public,
       method: :get,
       params: params,
@@ -48,9 +50,9 @@ defmodule Klaviyo do
   @doc """
   Tracks the first occurance of when someone takes an action or does something.
   """
-  @spec track_once(map) :: Klaviyo.Operation.t()
+  @spec track_once(map) :: Operation.t()
   def track_once(params) do
-    %Klaviyo.Operation{
+    %Operation{
       auth: :public,
       method: :get,
       params: params,

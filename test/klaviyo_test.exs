@@ -1,10 +1,12 @@
 defmodule KlaviyoTest do
   use ExUnit.Case, async: true
 
+  alias Klaviyo.{ Operation, Response }
+
   test "identify/1" do
     p = %{ a: "b" }
 
-    assert %Klaviyo.Operation{
+    assert %Operation{
       auth: :public,
       method: :get,
       params: ^p,
@@ -12,10 +14,22 @@ defmodule KlaviyoTest do
     } = Klaviyo.identify(p)
   end
 
+  test "request/2" do
+    bypass = Bypass.open()
+
+    config = %{ host: "localhost", port: bypass.port, protocol: "http" }
+
+    Bypass.expect(bypass, fn(conn) -> Plug.Conn.send_resp(conn, 200, "{\"ok\":true}") end)
+
+    operation = %Operation{ auth: :private, method: :get, path: "fake" }
+
+    assert { :ok, %Response{} } = Klaviyo.request(operation, config)
+  end
+
   test "track/1" do
     p = %{ a: "b" }
 
-    assert %Klaviyo.Operation{
+    assert %Operation{
       auth: :public,
       method: :get,
       params: ^p,
@@ -26,7 +40,7 @@ defmodule KlaviyoTest do
   test "track_once/1" do
     p = %{ a: "b" }
 
-    assert %Klaviyo.Operation{
+    assert %Operation{
       auth: :public,
       method: :get,
       params: ^p,
