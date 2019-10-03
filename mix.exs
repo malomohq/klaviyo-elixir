@@ -24,7 +24,8 @@ defmodule Klaviyo.MixProject do
       { :hackney,  "~> 1.15", optional: true },
       { :jason,    "~> 1.1", optional: true },
       { :dialyxir, "~> 1.0.0-rc", only: :dev, runtime: false },
-      { :ex_doc,   ">= 0.0.0", only: :dev, runtime: false }
+      { :ex_doc,   ">= 0.0.0", only: :dev, runtime: false },
+      { :bypass,   "~> 1.0", only: :test }
     ]
   end
 
