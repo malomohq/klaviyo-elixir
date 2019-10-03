@@ -34,7 +34,7 @@ defmodule Klaviyo.MixProject do
       maintainers: ["Anthony Smith"],
       licenses: ["MIT"],
       links: %{
-        GitHub: "https://github.com/malomohq/klaviyo-elixir"
+        GitHub: "https://github.com/malomohq/klaviyo-elixir",
         "Made by Malomo - Post-purchase experiences that customers love": "https://gomalomo.com"
       }
     ]
