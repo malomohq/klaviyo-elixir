@@ -4,8 +4,8 @@ defmodule Klaviyo.MixProject do
   def project do
     [
       app: :klaviyo,
-      version: "2.1.0",
-      elixir: "~> 1.8",
+      version: "2.1.1",
+      elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       dialyzer: [plt_add_apps: [:hackney]],
