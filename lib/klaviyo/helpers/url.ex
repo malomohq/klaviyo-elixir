@@ -28,7 +28,7 @@ defmodule Klaviyo.Helpers.URL do
     data =
       operation.params
       |> Helpers.JSON.encode(config)
-      |> Base.encode64()
+      |> Base.url_encode64()
 
     Map.put(uri, :query, "data=#{data}")
   end
