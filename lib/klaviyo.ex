@@ -29,6 +29,21 @@ defmodule Klaviyo do
   end
 
   @doc """
+  Track properties about an individual without tracking an associated event.
+
+  Makes a `POST` request.
+  """
+  @spec identify_post(map) :: Operation.t()
+  def identify_post(params) do
+    %Operation{
+      auth: :public,
+      method: :post,
+      params: params,
+      path: "identify"
+    }
+  end
+
+  @doc """
   Track when someone takes an action or does something.
   """
   @spec track(map) :: Operation.t()
@@ -36,6 +51,21 @@ defmodule Klaviyo do
     %Operation{
       auth: :public,
       method: :get,
+      params: params,
+      path: "track"
+    }
+  end
+
+  @doc """
+  Track when someone takes an action or does something.
+
+  Makes a `POST` request.
+  """
+  @spec track_post(map) :: Operation.t()
+  def track_post(params) do
+    %Operation{
+      auth: :public,
+      method: :post,
       params: params,
       path: "track"
     }

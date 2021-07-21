@@ -14,6 +14,17 @@ defmodule KlaviyoTest do
     } = Klaviyo.identify(p)
   end
 
+  test "identify_post/1" do
+    p = %{ a: "b" }
+
+    assert %Operation{
+      auth: :public,
+      method: :post,
+      params: ^p,
+      path: "identify"
+    } = Klaviyo.identify_post(p)
+  end
+
   test "request/2" do
     bypass = Bypass.open()
 
@@ -46,5 +57,16 @@ defmodule KlaviyoTest do
       params: ^p,
       path: "track-once"
     } = Klaviyo.track_once(p)
+  end
+
+  test "track_post/1" do
+    p = %{ a: "b" }
+
+    assert %Operation{
+      auth: :public,
+      method: :post,
+      params: ^p,
+      path: "track"
+    } = Klaviyo.track_post(p)
   end
 end
