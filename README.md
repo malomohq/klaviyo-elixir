@@ -107,6 +107,10 @@ Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
 * `Klaviyo.Person.timeline_for_metric/3`
 * `Klaviyo.Person.update/2`
 
+**People**
+
+* `Klaviyo.People.search/1`
+
 **Template**
 
 * `Klaviyo.Template.all/0`
