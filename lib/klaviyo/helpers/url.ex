@@ -37,6 +37,10 @@ defmodule Klaviyo.Helpers.URL do
     Map.put(uri, :query, URI.encode_query(operation.params))
   end
 
+  defp put_query(uri, %{ method: :put } = operation, _config) do
+    Map.put(uri, :query, URI.encode_query(operation.params))
+  end
+
   defp put_query(uri, _operation, _config) do
     uri
   end
