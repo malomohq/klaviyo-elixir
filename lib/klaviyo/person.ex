@@ -1,5 +1,17 @@
 defmodule Klaviyo.Person do
   @doc """
+  Exchange an encrypted identifier for a profile ID.
+  """
+  @spec exchange(String.t()) :: Klaviyo.Operation.t()
+  def exchange(exchange_id) do
+    %Klaviyo.Operation{
+      auth: :private,
+      method: :post,
+      path: "v2/people/exchange?_kx=#{exchange_id}"
+    }
+  end
+
+  @doc """
   Retrieve a person.
   """
   @spec get(String.t()) :: Klaviyo.Operation.t()
@@ -8,6 +20,19 @@ defmodule Klaviyo.Person do
       auth: :private,
       method: :get,
       path: "v1/person/#{person_id}"
+    }
+  end
+
+  @doc """
+  Retrieve a person's Klaviyo ID.
+  """
+  @spec search(map) :: Klaviyo.Operation.t()
+  def search(params) do
+    %Klaviyo.Operation{
+      auth: :private,
+      method: :get,
+      params: params,
+      path: "v2/people/search"
     }
   end
 
