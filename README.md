@@ -36,87 +36,85 @@ iex> Klaviyo.Campaign.send("dqQnNW") |> Klaviyo.request(%{ private_api_key: "...
 
 Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
 
-* `:host` - HTTP host to make requests to. Defaults to `a.klaviyo.com`.
-* `:http_client` - the HTTP client used for making requests. Defaults to
-                   `Klaviyo.Client.Hackney`.
-* `:http_client_opts` - additional options passed to `:http_client` when making
-                        a request
-* `:json_codec` - codec for encoding and decoding JSON. Defaults to `Jason`.
-* `:path` - URL path prefix used when making a request
+- `:host` - HTTP host to make requests to. Defaults to `a.klaviyo.com`.
+- `:http_client` - the HTTP client used for making requests. Defaults to
+  `Klaviyo.Client.Hackney`.
+- `:http_client_opts` - additional options passed to `:http_client` when making
+  a request
+- `:json_codec` - codec for encoding and decoding JSON. Defaults to `Jason`.
+- `:path` - URL path prefix used when making a request
 
-* `:port` - HTTP port used when making a request
-* `:private_api_key` - the Klaviyo private API key used when making a request to
-                       a resource endpoints
-* `:protocol` - HTTP protocol used when making a request. Defaults to `https`.
-* `:public_api_key` - the Klaviyo public API key used when making a request to
-                      the track and identify endpoints
-* `:retry` - a boolean to determine whether to retry a request on server error
-            (5xx errors) or client errors (e.g. `{:error, :timeout}`). Defaults
-            to `false`.
-* `:retry_opts` - additional options used when performing retries. Defaults to
-                  `[]`.
-  * `:max_attempts` - the maximum number of retries to make. Defaults to 3.
+- `:port` - HTTP port used when making a request
+- `:private_api_key` - the Klaviyo private API key used when making a request to
+  a resource endpoints
+- `:protocol` - HTTP protocol used when making a request. Defaults to `https`.
+- `:public_api_key` - the Klaviyo public API key used when making a request to
+  the track and identify endpoints
+- `:retry` - a boolean to determine whether to retry a request on server error
+  (5xx errors) or client errors (e.g. `{:error, :timeout}`). Defaults
+  to `false`.
+- `:retry_opts` - additional options used when performing retries. Defaults to
+  `[]`.
+  - `:max_attempts` - the maximum number of retries to make. Defaults to 3.
 
 ## Supported Endpoint Functions
 
 **Server-Side**
 
-* `Klaviyo.identify/1`
-* `Klaviyo.track/1`
-* `Klaviyo.track_once/1`
+- `Klaviyo.identify/1`
+- `Klaviyo.track/1`
+- `Klaviyo.track_once/1`
 
 **Campaign**
 
-* `Klaviyo.Campaign.all/1`
-* `Klaviyo.Campaign.all_recipients/1`
-* `Klaviyo.Campaign.cancel/1`
-* `Klaviyo.Campaign.clone/2`
-* `Klaviyo.Campaign.create/1`
-* `Klaviyo.Campaign.get/1`
-* `Klaviyo.Campaign.schedule/2`
-* `Klaviyo.Campaign.send/1`
-* `Klaviyo.Campaign.update/2`
+- `Klaviyo.Campaign.all/1`
+- `Klaviyo.Campaign.all_recipients/1`
+- `Klaviyo.Campaign.cancel/1`
+- `Klaviyo.Campaign.clone/2`
+- `Klaviyo.Campaign.create/1`
+- `Klaviyo.Campaign.get/1`
+- `Klaviyo.Campaign.schedule/2`
+- `Klaviyo.Campaign.send/1`
+- `Klaviyo.Campaign.update/2`
 
 **List**
 
-* `Klaviyo.List.add_as_member/2`
-* `Klaviyo.List.add_as_subscriber/2`
-* `Klaviyo.List.all/0`
-* `Klaviyo.List.all_exclusions/2`
-* `Klaviyo.List.all_group_members/2`
-* `Klaviyo.List.create/1`
-* `Klaviyo.List.delete/1`
-* `Klaviyo.List.get/1`
-* `Klaviyo.List.get_memberships/2`
-* `Klaviyo.List.get_subscriptions/2`
-* `Klaviyo.List.remove_as_member/2`
-* `Klaviyo.List.remove_as_subscriber/2`
-* `Klaviyo.List.update/2`
+- `Klaviyo.List.add_as_member/2`
+- `Klaviyo.List.add_as_subscriber/2`
+- `Klaviyo.List.all/0`
+- `Klaviyo.List.all_exclusions/2`
+- `Klaviyo.List.all_group_members/2`
+- `Klaviyo.List.create/1`
+- `Klaviyo.List.delete/1`
+- `Klaviyo.List.get/1`
+- `Klaviyo.List.get_memberships/2`
+- `Klaviyo.List.get_subscriptions/2`
+- `Klaviyo.List.remove_as_member/2`
+- `Klaviyo.List.remove_as_subscriber/2`
+- `Klaviyo.List.update/2`
 
 **Metric**
 
-* `Klaviyo.Metric.all/1`
-* `Klaviyo.Metric.export/2`
-* `Klaviyo.Metric.timeline/1`
-* `Klaviyo.Metric.timeline/2`
+- `Klaviyo.Metric.all/1`
+- `Klaviyo.Metric.export/2`
+- `Klaviyo.Metric.timeline/1`
+- `Klaviyo.Metric.timeline/2`
 
 **Person**
 
-* `Klaviyo.Person.get/1`
-* `Klaviyo.Person.timeline/2`
-* `Klaviyo.Person.timeline_for_metric/3`
-* `Klaviyo.Person.update/2`
-
-**People**
-
-* `Klaviyo.People.search/1`
+- `Klaviyo.Person.exchange/1`
+- `Klaviyo.Person.get/1`
+- `Klaviyo.Person.search/1`
+- `Klaviyo.Person.timeline/2`
+- `Klaviyo.Person.timeline_for_metric/3`
+- `Klaviyo.Person.update/2`
 
 **Template**
 
-* `Klaviyo.Template.all/0`
-* `Klaviyo.Template.clone/2`
-* `Klaviyo.Template.create/1`
-* `Klaviyo.Template.delete/1`
-* `Klaviyo.Template.render/2`
-* `Klaviyo.Template.send/2`
-* `Klaviyo.Template.update/2`
+- `Klaviyo.Template.all/0`
+- `Klaviyo.Template.clone/2`
+- `Klaviyo.Template.create/1`
+- `Klaviyo.Template.delete/1`
+- `Klaviyo.Template.render/2`
+- `Klaviyo.Template.send/2`
+- `Klaviyo.Template.update/2`
