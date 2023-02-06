@@ -11,7 +11,7 @@ defmodule Klaviyo.RequestOperation do
 
   @type t ::
           %__MODULE__{
-            body: keyword,
+            body: Enum.t(),
             encoding: :json,
             method: HTTP.method_t(),
             query: keyword,
