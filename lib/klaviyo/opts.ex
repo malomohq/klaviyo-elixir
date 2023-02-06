@@ -27,7 +27,7 @@ defmodule Klaviyo.Opts do
             headers: [],
             host: "a.klaviyo.com",
             json_codec: Jason,
-            path: "/api",
+            path: "",
             port: nil,
             protocol: "https",
             retry: false,
