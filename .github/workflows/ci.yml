@@ -1,4 +1,4 @@
-name: ci
+3name: ci
 
 on: push
 
@@ -32,21 +32,20 @@ jobs:
         strategy:
             matrix:
                 elixir:
-                    - 1.11.x
                     - 1.12.x
                     - 1.13.x
+                    - 1.14.x
 
                 exclude:
-                    - elixir: 1.11.x
-
-                      otp: 25.x
-
                     - elixir: 1.12.x
 
                       otp: 25.x
 
+                    - elixir: 1.13.x
+
+                      otp: 25.x
+
                 otp:
-                    - 23.x
                     - 24.x
                     - 25.x
 
@@ -76,23 +75,22 @@ jobs:
 
             - run: mix test
 
-        strategy:
+        trategy:
             matrix:
                 elixir:
-                    - 1.11.x
                     - 1.12.x
                     - 1.13.x
+                    - 1.14.x
 
                 exclude:
-                    - elixir: 1.11.x
-
-                      otp: 25.x
-
                     - elixir: 1.12.x
 
                       otp: 25.x
 
+                    - elixir: 1.13.x
+
+                      otp: 25.x
+
                 otp:
-                    - 23.x
                     - 24.x
                     - 25.x
