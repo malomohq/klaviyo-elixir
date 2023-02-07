@@ -39,9 +39,9 @@ defmodule Klaviyo.Event do
   @spec create(Enum.t()) :: RequestOperation.t()
   def create(params) do
     %RequestOperation{
+      body: params,
       method: :post,
-      path: "/api/events",
-      body: params
+      path: "/api/events"
     }
   end
 
