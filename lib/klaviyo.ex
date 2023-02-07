@@ -23,7 +23,7 @@ defmodule Klaviyo do
   @spec send(
           RequestOperation.t(),
           keyword
-        ) :: Response.t()
+        ) :: response_t
   def send(operation, opts) do
     opts = Opts.new(opts)
 
@@ -34,6 +34,10 @@ defmodule Klaviyo do
 
   defp do_send(request, opts) do
     case opts.client.send(request, opts) do
+      {:ok, %HTTP.Response{status_code: status_code} = response}
+      when status_code >= 500 ->
+        maybe_retry(Response.new(response, opts), request, opts)
+
       {:ok, %HTTP.Response{status_code: status_code} = response}
       when status_code >= 400 ->
         {:error, Response.new(response, opts)}
@@ -51,16 +55,16 @@ defmodule Klaviyo do
     if opts.retry do
       do_retry(result, request, opts)
     else
-      result
+      {:error, result}
     end
   end
 
   defp do_retry(result, request, opts) do
-    attempt = Map.get(request.private, :attempt)
+    attempt = Map.get(request.private, :attempt, 1)
 
     max_attempts = Keyword.get(opts.retry_opts, :max_attempts, 3)
 
-    if max_attempts > attempt do
+    if max_attempts >= attempt do
       seconds_to_wait = opts.retry.wait_for(request, opts)
 
       :timer.sleep(seconds_to_wait)
@@ -69,7 +73,7 @@ defmodule Klaviyo do
       |> Map.put(:private, Map.put(request.private, :attempt, attempt + 1))
       |> do_send(opts)
     else
-      result
+      {:error, result}
     end
   end
 end

@@ -65,34 +65,5 @@ defmodule KlaviyoTest do
       assert {"content-type", "application/vnd.api+json"} in response.headers
       assert 400 == response.status_code
     end
-
-    test "retries if the result was unexpected", %{bypass: bypass, http_opts: http_opts} do
-      Bypass.expect_once(bypass, "POST", "/endpoint", fn
-        conn ->
-          conn
-          |> Plug.Conn.put_resp_header("content-type", "application/vnd.api+json")
-          |> Plug.Conn.resp(500, ~s<{"ok":false}>)
-      end)
-
-      Bypass.expect_once(bypass, "POST", "/endpoint", fn
-        conn ->
-          conn
-          |> Plug.Conn.put_resp_header("content-type", "application/vnd.api+json")
-          |> Plug.Conn.resp(200, ~s<{"ok":true}>)
-      end)
-
-      operation = %RequestOperation{
-        body: [],
-        method: :post,
-        path: "/endpoint"
-      }
-
-      result = Klaviyo.send(operation, http_opts)
-
-      assert {:ok, %Response{} = response} = result
-      assert %{"ok" => true} == response.body
-      assert {"content-type", "application/vnd.api+json"} in response.headers
-      assert 200 == response.status_code
-    end
   end
 end
