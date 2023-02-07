@@ -29,6 +29,10 @@ defmodule Klaviyo do
 
     request = Request.new(operation, opts)
 
+    do_send(request, opts)
+  end
+
+  defp do_send(request, opts) do
     case opts.client.send(request, opts) do
       {:ok, %HTTP.Response{status_code: status_code} = response}
       when status_code >= 400 ->
@@ -38,8 +42,34 @@ defmodule Klaviyo do
       when status_code >= 200 ->
         {:ok, Response.new(response, opts)}
 
-      otherwise ->
-        otherwise
+      result ->
+        maybe_retry(result, request, opts)
+    end
+  end
+
+  defp maybe_retry(result, request, opts) do
+    if opts.retry do
+      do_retry(result, request, opts)
+    else
+      result
+    end
+  end
+
+  defp do_retry(result, request, opts) do
+    attempt = Map.get(request.private, :attempt)
+
+    max_attempts = Keyword.get(opts.retry_opts, :max_attempts, 3)
+
+    if max_attempts > attempt do
+      seconds_to_wait = opts.retry.wait_for(request, opts)
+
+      :timer.sleep(seconds_to_wait)
+
+      request
+      |> Map.put(:private, Map.put(request.private, :attempt, attempt + 1))
+      |> do_send(opts)
+    else
+      result
     end
   end
 end
