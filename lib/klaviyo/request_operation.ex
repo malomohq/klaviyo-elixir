@@ -14,7 +14,7 @@ defmodule Klaviyo.RequestOperation do
             body: Enum.t(),
             encoding: :json,
             method: HTTP.method_t(),
-            query: keyword,
+            query: Enum.t(),
             path: String.t()
           }
 
