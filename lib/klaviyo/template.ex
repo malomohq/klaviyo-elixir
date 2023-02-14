@@ -1,94 +1,65 @@
 defmodule Klaviyo.Template do
-  @doc """
-  Return all email templates.
+  alias Klaviyo.RequestOperation
 
-  Email templates are returned in sorted order by name.
-  """
-  @spec all :: Klaviyo.Operation.t()
-  def all do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec all(Enum.t()) :: RequestOperation.t()
+  def all(params \\ []) do
+    %RequestOperation{
       method: :get,
-      path: "v1/email-templates"
+      path: "/api/templates",
+      query: params
     }
   end
 
-  @doc """
-  Create a copy of an email template.
-  """
-  @spec clone(String.t(), map) :: Klaviyo.Operation.t()
-  def clone(template_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec clone(Enum.t()) :: RequestOperation.t()
+  def clone(params) do
+    %RequestOperation{
+      body: params,
       method: :post,
-      params: params,
-      path: "v1/email-template/#{template_id}/clone"
+      path: "/api/template-clone"
     }
   end
 
-  @doc """
-  Create an email template.
-  """
-  @spec create(map) :: Klaviyo.Operation.t()
+  @spec create(Enum.t()) :: RequestOperation.t()
   def create(params) do
-    %Klaviyo.Operation{
-      auth: :private,
+    %RequestOperation{
+      body: params,
       method: :post,
-      params: params,
-      path: "v1/email-templates"
+      path: "/api/templates"
     }
   end
 
-  @doc """
-  Delete an email template.
-  """
-  @spec delete(String.t()) :: Klaviyo.Operation.t()
+  @spec delete(String.t()) :: RequestOperation.t()
   def delete(template_id) do
-    %Klaviyo.Operation{
-      auth: :private,
+    %RequestOperation{
       method: :delete,
-      path: "v1/email-template/#{template_id}"
+      path: "/api/templates/#{template_id}"
     }
   end
 
-  @doc """
-  Renders HTML and text versions of an email template.
-  """
-  @spec render(String.t(), map) :: Klaviyo.Operation.t()
-  def render(template_id, params \\ %{}) do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec get(String.t(), Enum.t()) :: RequestOperation.t()
+  def get(template_id, params \\ []) do
+    %RequestOperation{
+      method: :get,
+      path: "/api/templates/#{template_id}",
+      query: params
+    }
+  end
+
+  @spec render(Enum.t()) :: RequestOperation.t()
+  def render(params) do
+    %RequestOperation{
+      body: params,
       method: :post,
-      params: params,
-      path: "v1/email-template/#{template_id}/render"
+      path: "/api/template-render"
     }
   end
 
-  @doc """
-  Renders and sends an email template.
-  """
-  @spec send(String.t(), map) :: Klaviyo.Operation.t()
-  def send(template_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
-      method: :post,
-      params: params,
-      path: "v1/email-template/#{template_id}/send"
-    }
-  end
-
-  @doc """
-  Update an email template.
-
-  Only updates imported HTML templates.
-  """
-  @spec update(String.t(), map) :: Klaviyo.Operation.t()
+  @spec update(String.t(), Enum.t()) :: RequestOperation.t()
   def update(template_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
+    %RequestOperation{
+      body: params,
       method: :put,
-      params: params,
-      path: "v1/email-template/#{template_id}"
+      path: "/api/templates/#{template_id}"
     }
   end
 end

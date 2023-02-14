@@ -1,55 +1,30 @@
 defmodule Klaviyo.Metric do
-  @doc """
-  Returns a list of all metrics.
-  """
-  @spec all(map) :: Klaviyo.Operation.t()
-  def all(params \\ %{}) do
-    %Klaviyo.Operation{
-      auth: :private,
-      method: :get,
-      params: params,
-      path: "v1/metrics"
+  alias Klaviyo.RequestOperation
+
+  @spec aggregates(Enum.t()) :: RequestOperation.t()
+  def aggregates(params) do
+    %RequestOperation{
+      body: params,
+      method: :post,
+      path: "/api/metric-aggregates"
     }
   end
 
-  @doc """
-  Export event data.
-
-  Optionally filtering and segmented on available event properties.
-  """
-  @spec export(String.t(), map) :: Klaviyo.Operation.t()
-  def export(metric_id, params \\ %{}) do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec all(Enum.t()) :: RequestOperation.t()
+  def all(params \\ []) do
+    %RequestOperation{
       method: :get,
-      params: params,
-      path: "v1/metric/#{metric_id}/export"
+      path: "/api/metrics",
+      query: params
     }
   end
 
-  @doc """
-  Returns a batched timeline of all events.
-  """
-  @spec timeline(map) :: Klaviyo.Operation.t()
-  def timeline(params \\ %{}) do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec get(String.t(), Enum.t()) :: RequestOperation.t()
+  def get(metric_id, params \\ []) do
+    %RequestOperation{
       method: :get,
-      params: params,
-      path: "v1/metrics/timeline"
-    }
-  end
-
-  @doc """
-  Returns a batched timeline for one specific type of metric.
-  """
-  @spec timeline_for_type(String.t(), map) :: Klaviyo.Operation.t()
-  def timeline_for_type(metric_id, params \\ %{}) do
-    %Klaviyo.Operation{
-      auth: :private,
-      method: :get,
-      params: params,
-      path: "v1/metric/#{metric_id}/timeline"
+      path: "/api/metrics/#{metric_id}",
+      query: params
     }
   end
 end

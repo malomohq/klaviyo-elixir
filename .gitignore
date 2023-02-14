@@ -24,3 +24,6 @@ klaviyo-*.tar
 
 # Ignore macOS directory config.
 .DS_Store
+
+# Ignore Elixir LS files.
+.elixir_ls/

@@ -1,110 +1,44 @@
 defmodule Klaviyo.RequestTest do
   use ExUnit.Case, async: true
 
-  alias Klaviyo.{ Config, Operation, Request, Response }
+  alias Klaviyo.{Opts, Request, RequestOperation}
 
-  setup do
-    bypass = Bypass.open()
+  describe "new/2" do
+    test "builds a Request struct" do
+      api_key = "xxx"
+      body = %{ok: true}
+      host = "a.klaviyo.com"
+      method = :get
+      path = "/endpoint"
+      port = 4000
+      query = [a: 1]
+      revision = "xxx"
 
-    config = Config.new(%{ host: "localhost", port: bypass.port, private_api_key: "xxx", protocol: "http" })
+      operation = %RequestOperation{
+        body: body,
+        method: method,
+        path: path,
+        query: query
+      }
 
-    operation = %Operation{ auth: :private, method: :post, params: %{ var: "a" }, path: "fake" }
+      opts = %Opts{api_key: api_key, host: host, port: port, revision: revision}
 
-    %{ bypass: bypass, config: config, operation: operation}
-  end
+      headers = [
+        {"authorization", "Klaviyo-API-Key #{api_key}"},
+        {"content-type", "application/json"},
+        {"revision", revision}
+      ]
 
-  describe "send/3" do
-    test "returns { :ok, %Klaviyo.Response{} } when response has an HTTP status code of 200", tags do
-      bypass = Map.get(tags, :bypass)
-      config = Map.get(tags, :config)
-      operation = Map.get(tags, :operation)
+      url = RequestOperation.to_url(operation, opts)
 
-      Bypass.expect(bypass, fn(conn) -> Plug.Conn.send_resp(conn, 200, "{\"ok\":true}") end)
+      expected = %Request{
+        body: opts.json_codec.encode!(body),
+        headers: headers,
+        method: method,
+        url: url
+      }
 
-      assert { :ok, %Response{} } = Request.send(operation, config)
-    end
-
-    test "returns { :error, %Klaviyo.Response{} } when response has an HTTP status code of 400", tags do
-      bypass = Map.get(tags, :bypass)
-      config = Map.get(tags, :config)
-      operation = Map.get(tags, :operation)
-
-      Bypass.expect(bypass, fn(conn) -> Plug.Conn.send_resp(conn, 400, "{\"ok\":false}") end)
-
-      assert { :error, %Response{} } = Request.send(operation, config)
-    end
-
-    test "makes a request", tags do
-      bypass = Map.get(tags, :bypass)
-      config = Map.get(tags, :config)
-      operation = Map.get(tags, :operation)
-
-      Bypass.expect(bypass, fn
-        (conn) ->
-          conn_opts = Plug.Parsers.init([json_decoder: Jason, parsers: [:json, :urlencoded], pass: ["*/*"]])
-
-          conn = Plug.Parsers.call(conn, conn_opts)
-
-          assert conn.body_params == %{ "api_key" => "xxx", "var" => "a" }
-          assert conn.method == "POST"
-
-          Plug.Conn.send_resp(conn, 200, "{\"ok\":true}")
-      end)
-
-      Request.send(operation, config)
-    end
-
-    test "does not retry when status code is 200", tags do
-      bypass = Map.get(tags, :bypass)
-      config = Map.get(tags, :config)
-      operation = Map.get(tags, :operation)
-
-      Bypass.expect(bypass, fn
-        (conn) ->
-          conn_opts = Plug.Parsers.init([json_decoder: Jason, parsers: [:json, :urlencoded], pass: ["*/*"]])
-
-          conn = Plug.Parsers.call(conn, conn_opts)
-
-          Plug.Conn.send_resp(conn, 200, "{\"ok\":true}")
-      end)
-
-      config = Map.merge(config, %{ retry: true })
-
-      assert { :ok, %Response{ private: %{ attempts: 1 } } } = Request.send(operation, config)
-    end
-
-    test "does not retry when status code is 400", tags do
-      bypass = Map.get(tags, :bypass)
-      config = Map.get(tags, :config)
-      operation = Map.get(tags, :operation)
-
-      Bypass.expect(bypass, fn
-        (conn) ->
-          conn = Plug.Parsers.call(conn, Plug.Parsers.init([json_decoder: Jason, parsers: [:json], pass: ["*/*"]]))
-
-          Plug.Conn.send_resp(conn, 400, "{\"ok\":true}")
-      end)
-
-      config = Map.merge(config, %{ retry: true })
-
-      assert { :error, %Response{ private: %{ attempts: 1 } } } = Request.send(operation, config)
-    end
-
-    test "retries when status code is 500", tags do
-      bypass = Map.get(tags, :bypass)
-      config = Map.get(tags, :config)
-      operation = Map.get(tags, :operation)
-
-      Bypass.expect(bypass, fn
-        (conn) ->
-          conn = Plug.Parsers.call(conn, Plug.Parsers.init([json_decoder: Jason, parsers: [:json], pass: ["*/*"]]))
-
-          Plug.Conn.send_resp(conn, 500, "{\"ok\":false}")
-      end)
-
-      config = Map.merge(config, %{ retry: true, retry_opts: [max_attempts: 3] })
-
-      assert { :error, %Response{ private: %{ attempts: 3 } } } = Request.send(operation, config)
+      assert expected == Request.new(operation, opts)
     end
   end
 end

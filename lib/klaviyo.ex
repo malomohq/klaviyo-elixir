@@ -1,86 +1,79 @@
 defmodule Klaviyo do
-  alias Klaviyo.{ Config, Operation, Request, Response }
+  alias Klaviyo.HTTP
+  alias Klaviyo.Opts
+  alias Klaviyo.Request
+  alias Klaviyo.RequestOperation
+  alias Klaviyo.Response
 
-  @type http_headers_t :: [{ String.t(), String.t() }]
+  @type headers_t ::
+          [{String.t(), String.t()}]
 
-  @type http_method_t :: :delete | :get | :post | :put
+  @type method_t ::
+          :delete | :get | :head | :patch | :post | :put
 
-  @type response_t :: { :ok, Response.t() } | { :error, any }
+  @type response_t ::
+          {:ok, Response.t()} | {:error, Response.t() | any}
+
+  @type status_code_t ::
+          pos_integer
 
   @doc """
-  Makes a request to the Klaviyo API.
+  Send an HTTP request.
   """
-  @spec request(Operation.t(), Config.t()) :: response_t
-  def request(operation, config) do
-    Request.send(operation, Config.new(config))
+  @spec send(
+          RequestOperation.t(),
+          keyword
+        ) :: response_t
+  def send(operation, opts) do
+    opts = Opts.new(opts)
+
+    request = Request.new(operation, opts)
+
+    do_send(request, opts)
   end
 
-  @doc """
-  Track properties about an individual without tracking an associated event.
-  """
-  @spec identify(map) :: Operation.t()
-  def identify(params) do
-    %Operation{
-      auth: :public,
-      method: :get,
-      params: params,
-      path: "identify"
-    }
+  defp do_send(request, opts) do
+    case opts.client.send(request, opts) do
+      {:ok, %HTTP.Response{status_code: status_code} = response}
+      when status_code >= 500 ->
+        maybe_retry(Response.new(response, opts), request, opts)
+
+      {:ok, %HTTP.Response{status_code: status_code} = response}
+      when status_code >= 400 ->
+        {:error, Response.new(response, opts)}
+
+      {:ok, %HTTP.Response{status_code: status_code} = response}
+      when status_code >= 200 ->
+        {:ok, Response.new(response, opts)}
+
+      result ->
+        maybe_retry(result, request, opts)
+    end
   end
 
-  @doc """
-  Track properties about an individual without tracking an associated event.
-
-  Makes a `POST` request.
-  """
-  @spec identify_post(map) :: Operation.t()
-  def identify_post(params) do
-    %Operation{
-      auth: :public,
-      method: :post,
-      params: params,
-      path: "identify"
-    }
+  defp maybe_retry(result, request, opts) do
+    if opts.retry do
+      do_retry(result, request, opts)
+    else
+      {:error, result}
+    end
   end
 
-  @doc """
-  Track when someone takes an action or does something.
-  """
-  @spec track(map) :: Operation.t()
-  def track(params) do
-    %Operation{
-      auth: :public,
-      method: :get,
-      params: params,
-      path: "track"
-    }
-  end
+  defp do_retry(result, request, opts) do
+    attempt = Map.get(request.private, :attempt, 1)
 
-  @doc """
-  Track when someone takes an action or does something.
+    max_attempts = Keyword.get(opts.retry_opts, :max_attempts, 3)
 
-  Makes a `POST` request.
-  """
-  @spec track_post(map) :: Operation.t()
-  def track_post(params) do
-    %Operation{
-      auth: :public,
-      method: :post,
-      params: params,
-      path: "track"
-    }
-  end
+    if max_attempts >= attempt do
+      seconds_to_wait = opts.retry.wait_for(request, opts)
 
-  @doc """
-  Tracks the first occurance of when someone takes an action or does something.
-  """
-  @spec track_once(map) :: Operation.t()
-  def track_once(params) do
-    %Operation{
-      auth: :public,
-      method: :get,
-      params: params,
-      path: "track-once"
-    }
+      :timer.sleep(seconds_to_wait)
+
+      request
+      |> Map.put(:private, Map.put(request.private, :attempt, attempt + 1))
+      |> do_send(opts)
+    else
+      {:error, result}
+    end
   end
 end

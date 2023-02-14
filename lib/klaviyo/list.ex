@@ -1,172 +1,92 @@
 defmodule Klaviyo.List do
-  @doc """
-  Add people to a list without changing their subscription or suppression
-  status.
-  """
-  @spec add_as_member(String.t(), map) :: Klaviyo.Operation.t()
-  def add_as_member(list_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
+  alias Klaviyo.RequestOperation
+
+  @spec add_profile(String.t(), String.t(), Enum.t()) :: RequestOperation.t()
+  def add_profile(list_id, related_resource, params) do
+    %RequestOperation{
+      body: params,
       method: :post,
-      params: params,
-      path: "v2/list/#{list_id}/members"
+      path: "/api/lists/#{list_id}/relationships/#{related_resource}/"
     }
   end
 
-  @doc """
-  Add people to a list in addition to modifying their membership and updating
-  their suppressions.
-
-  People will be single or double opted into the specified list in accordance
-  with that list's settings.
-  """
-  @spec add_as_subscriber(String.t(), map) :: Klaviyo.Operation.t()
-  def add_as_subscriber(list_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
-      method: :post,
-      params: params,
-      path: "v2/list/#{list_id}/subscribe"
-    }
-  end
-
-  @doc """
-  Returns an array of lists.
-  """
-  @spec all :: Klaviyo.Operation.t()
-  def all do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec all(Enum.t()) :: RequestOperation.t()
+  def all(params \\ []) do
+    %RequestOperation{
       method: :get,
-      path: "v2/lists"
+      path: "/api/lists",
+      query: params
     }
   end
 
-  @doc """
-  Get all emails that have been excluded from a list along with the reason and
-  time they were excluded.
-  """
-  @spec all_exclusions(String.t(), map) :: Klaviyo.Operation.t()
-  def all_exclusions(list_id, params \\ %{}) do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec all_tags(String.t(), Enum.t()) :: RequestOperation.t()
+  def all_tags(list_id, params \\ []) do
+    %RequestOperation{
       method: :get,
-      params: params,
-      path: "v2/list/#{list_id}/exclusions/all",
+      path: "/api/lists/#{list_id}/tags",
+      query: params
     }
   end
 
-  @doc """
-  Get all emails in a given list or segment.
-  """
-  @spec all_group_members(String.t(), map) :: Klaviyo.Operation.t()
-  def all_group_members(list_id_or_segment_id, params \\ %{}) do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec all_profiles(String.t(), Enum.t()) :: RequestOperation.t()
+  def all_profiles(list_id, params \\ []) do
+    %RequestOperation{
       method: :get,
-      params: params,
-      path: "v2/group/#{list_id_or_segment_id}/members/all"
+      path: "/api/lists/#{list_id}/profiles",
+      query: params
     }
   end
 
-  @doc """
-  Create a list.
-  """
-  @spec create(map) :: Klaviyo.Operation.t()
+  @spec all_relationships(String.t(), String.t(), Enum.t()) :: RequestOperation.t()
+  def all_relationships(list_id, related_resource, params \\ []) do
+    %RequestOperation{
+      method: :get,
+      path: "/api/lists/#{list_id}/relationships/#{related_resource}",
+      query: params
+    }
+  end
+
+  @spec create(Enum.t()) :: RequestOperation.t()
   def create(params) do
-    %Klaviyo.Operation{
-      auth: :private,
+    %RequestOperation{
+      body: params,
       method: :post,
-      params: params,
-      path: "v2/lists"
+      path: "/api/lists"
     }
   end
 
-  @doc """
-  Delete a list.
-  """
-  @spec delete(String.t()) :: Klaviyo.Operation.t()
+  @spec delete(String.t()) :: RequestOperation.t()
   def delete(list_id) do
-    %Klaviyo.Operation{
-      auth: :private,
+    %RequestOperation{
       method: :delete,
-      path: "v2/list/#{list_id}"
+      path: "/api/lists/#{list_id}"
     }
   end
 
-  @doc """
-  Retrieve a list.
-  """
-  @spec get(String.t()) :: Klaviyo.Operation.t()
-  def get(list_id) do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec get(String.t(), Enum.t()) :: RequestOperation.t()
+  def get(list_id, params \\ []) do
+    %RequestOperation{
       method: :get,
-      path: "v2/list/#{list_id}"
+      path: "/api/lists/#{list_id}",
+      query: params
     }
   end
 
-  @doc """
-  Get people that are on a list.
-  """
-  @spec get_memberships(String.t(), map) :: Klaviyo.Operation.t()
-  def get_memberships(list_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
-      method: :get,
-      params: params,
-      path: "v2/list/#{list_id}/members"
-    }
-  end
-
-  @doc """
-  Get people that are on a list and not suppressed.
-  """
-  @spec get_subscriptions(String.t(), map) :: Klaviyo.Operation.t()
-  def get_subscriptions(list_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
-      method: :get,
-      params: params,
-      path: "v2/list/#{list_id}/subscribe"
-    }
-  end
-
-  @doc """
-  Remove members from a list
-  """
-  def remove_as_member(list_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
+  @spec remove_profile(String.t(), String.t(), Enum.t()) :: RequestOperation.t()
+  def remove_profile(list_id, related_resource, params) do
+    %RequestOperation{
+      body: params,
       method: :delete,
-      params: params,
-      path: "v2/list/#{list_id}/members"
+      path: "/api/lists/#{list_id}/relationships/#{related_resource}/"
     }
   end
 
-  @doc """
-  Remove subscribers from a list.
-  """
-  @spec remove_as_subscriber(String.t(), map) :: Klaviyo.Operation.t()
-  def remove_as_subscriber(list_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
-      method: :delete,
-      params: params,
-      path: "v2/list/#{list_id}/subscribe"
-    }
-  end
-
-  @doc """
-  Update a list.
-  """
-  @spec update(String.t(), map) :: Klaviyo.Operation.t()
+  @spec update(String.t(), Enum.t()) :: RequestOperation.t()
   def update(list_id, params) do
-    %Klaviyo.Operation{
-      auth: :private,
-      method: :put,
-      params: params,
-      path: "v2/list/#{list_id}"
+    %RequestOperation{
+      body: params,
+      method: :patch,
+      path: "/api/lists/#{list_id}"
     }
   end
 end

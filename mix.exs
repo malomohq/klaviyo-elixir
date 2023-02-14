@@ -4,8 +4,8 @@ defmodule Klaviyo.MixProject do
   def project do
     [
       app: :klaviyo,
-      version: "2.3.0",
-      elixir: "~> 1.10",
+      version: "3.0.0",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       dialyzer: [plt_add_apps: [:hackney]],
@@ -21,11 +21,11 @@ defmodule Klaviyo.MixProject do
 
   defp deps do
     [
-      { :hackney,  "~> 1.15", optional: true },
-      { :jason,    "~> 1.1", optional: true },
-      { :dialyxir, "~> 1.1", only: :dev, runtime: false },
-      { :ex_doc,   ">= 0.0.0", only: :dev, runtime: false },
-      { :bypass,   "~> 2.1", only: :test }
+      {:hackney, "~> 1.15", optional: true},
+      {:jason, "~> 1.1", optional: true},
+      {:dialyxir, "~> 1.1", only: :dev, runtime: false},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:bypass, "~> 2.1", only: :test}
     ]
   end
 

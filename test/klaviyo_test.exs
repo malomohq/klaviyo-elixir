@@ -1,72 +1,69 @@
 defmodule KlaviyoTest do
   use ExUnit.Case, async: true
 
-  alias Klaviyo.{ Operation, Response }
+  alias Klaviyo.HTTP
+  alias Klaviyo.RequestOperation
+  alias Klaviyo.Response
 
-  test "identify/1" do
-    p = %{ a: "b" }
-
-    assert %Operation{
-      auth: :public,
-      method: :get,
-      params: ^p,
-      path: "identify"
-    } = Klaviyo.identify(p)
-  end
-
-  test "identify_post/1" do
-    p = %{ a: "b" }
-
-    assert %Operation{
-      auth: :public,
-      method: :post,
-      params: ^p,
-      path: "identify"
-    } = Klaviyo.identify_post(p)
-  end
-
-  test "request/2" do
+  setup do
     bypass = Bypass.open()
 
-    config = %{ host: "localhost", port: bypass.port, protocol: "http" }
+    http_opts = [
+      client: HTTP.Hackney,
+      host: "localhost",
+      port: bypass.port,
+      protocol: "http"
+    ]
 
-    Bypass.expect(bypass, fn(conn) -> Plug.Conn.send_resp(conn, 200, "{\"ok\":true}") end)
-
-    operation = %Operation{ auth: :private, method: :get, path: "fake" }
-
-    assert { :ok, %Response{} } = Klaviyo.request(operation, config)
+    {:ok, bypass: bypass, http_opts: http_opts}
   end
 
-  test "track/1" do
-    p = %{ a: "b" }
+  describe "send/2" do
+    test "returns :ok if the response was successful", %{bypass: bypass, http_opts: http_opts} do
+      Bypass.expect_once(bypass, "POST", "/endpoint", fn
+        conn ->
+          conn
+          |> Plug.Conn.put_resp_header("content-type", "application/vnd.api+json")
+          |> Plug.Conn.resp(200, ~s<{"ok":true}>)
+      end)
 
-    assert %Operation{
-      auth: :public,
-      method: :get,
-      params: ^p,
-      path: "track"
-    } = Klaviyo.track(p)
-  end
+      operation = %RequestOperation{
+        body: [],
+        method: :post,
+        path: "/endpoint"
+      }
 
-  test "track_once/1" do
-    p = %{ a: "b" }
+      result = Klaviyo.send(operation, http_opts)
 
-    assert %Operation{
-      auth: :public,
-      method: :get,
-      params: ^p,
-      path: "track-once"
-    } = Klaviyo.track_once(p)
-  end
+      assert {:ok, %Response{} = response} = result
+      assert %{"ok" => true} == response.body
+      assert {"content-type", "application/vnd.api+json"} in response.headers
+      assert 200 == response.status_code
+    end
 
-  test "track_post/1" do
-    p = %{ a: "b" }
+    test "returns :error if the response was not successful", %{
+      bypass: bypass,
+      http_opts: http_opts
+    } do
+      Bypass.expect_once(bypass, "POST", "/endpoint", fn
+        conn ->
+          conn
+          |> Plug.Conn.put_resp_header("content-type", "application/vnd.api+json")
+          |> Plug.Conn.resp(400, ~s<{"ok":false}>)
+      end)
 
-    assert %Operation{
-      auth: :public,
-      method: :post,
-      params: ^p,
-      path: "track"
-    } = Klaviyo.track_post(p)
+      operation = %RequestOperation{
+        body: [],
+        method: :post,
+        path: "/endpoint"
+      }
+
+      result = Klaviyo.send(operation, http_opts)
+
+      assert {:error, %Response{} = response} = result
+      assert %{"ok" => false} == response.body
+      assert {"content-type", "application/vnd.api+json"} in response.headers
+      assert 400 == response.status_code
+    end
   end
 end

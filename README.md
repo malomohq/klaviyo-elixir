@@ -1,120 +1,88 @@
 # Klaviyo
 
-An Elixir library for working with the Klaviyo REST API.
-
 ## Installation
+
+`klaviyo` is published on [Hex](https://hex.pm/packages/klaviyo). Add it to
+your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:klaviyo, "~> 2.0"},
-    {:hackney, "~> 1.15"},
-    {:jason, "~> 1.1"}
+    {:klaviyo, "~> 3.0"}
   ]
 end
 ```
 
-Note that usage of `hackney` and `jason` are optional. You may implement support
-for your own HTTP library and JSON codec.
-
 ## Usage
 
-You make a request to the Klaviyo API by passing the request description created
-by resource endpoint functions (e.g. `Klaviyo.Campaign.send/1` or
-`Klaviyo.track/1`) to the `Klaviyo.request/2` function.
+Requests can be made using the `send/2` function. This function accepts a
+`Klaviyo.RequestOperation` struct as the first argument and a keyword list of
+configuration options as the second argument.
 
-All requests that get a response from the Klaviyo API will be returned as either
-`{:ok, %Klaviyo.Response{}}` or `{:error, %Klaviyo.Response{}}`. In the event of
-a client error `{:error, _reason}` will be returned.
+Resource modules (e.g.`Klaviyo.Event`) return `Klaviyo.RequestOperation`
+structs.
+
+### Example
 
 ```elixir
-iex> Klaviyo.Campaign.send("dqQnNW") |> Klaviyo.request(%{ private_api_key: "..." })
-{:ok, %Klaviyo.Response{body: _, headers: _, status_code: 200}}
+iex> %Klaviyo.Event.all()
+      ...> |> Klaviyo.send(
+      ...>      api_key: "pk_xxx",
+      ...>      revision: "2023-01-24"
+      ...>    )
+      {:ok, %Klaviyo.Response{}}
 ```
 
 ## Configuration
 
-Configuration is passed as a map to the second argument of `Klaviyo.request/2`.
+The `send/2` function takes a keyword list of configuration options as the
+second argument. These provide the client with additional details needed to
+make a request and various other options for how the client should process the
+request and how it should behave.
 
-- `:host` - HTTP host to make requests to. Defaults to `a.klaviyo.com`.
-- `:http_client` - the HTTP client used for making requests. Defaults to
-  `Klaviyo.Client.Hackney`.
-- `:http_client_opts` - additional options passed to `:http_client` when making
-  a request
-- `:json_codec` - codec for encoding and decoding JSON. Defaults to `Jason`.
-- `:path` - URL path prefix used when making a request
+### Options
 
+- `:api_key` Public or private Klaviyo API key
+- `:client` - HTTP client adapter used to make the request. Defaults to
+  `Klaviyo.HTTP.Hackney`.
+- `:client_opts` - Configuration options passed to the client adapter
+- `:headers` - HTTP headers used when making a request
+- `:host` - Hostname used when making a request. Defaults to `a.klaviyo.com`.
+- `:json_codec` - Module used to encode and decode JSON. Defaults to `Jason`.
+- `:path` - Base path used when building the URL to send a request to
 - `:port` - HTTP port used when making a request
-- `:private_api_key` - the Klaviyo private API key used when making a request to
-  a resource endpoints
-- `:protocol` - HTTP protocol used when making a request. Defaults to `https`.
-- `:public_api_key` - the Klaviyo public API key used when making a request to
-  the track and identify endpoints
-- `:retry` - a boolean to determine whether to retry a request on server error
-  (5xx errors) or client errors (e.g. `{:error, :timeout}`). Defaults
-  to `false`.
-- `:retry_opts` - additional options used when performing retries. Defaults to
-  `[]`.
-  - `:max_attempts` - the maximum number of retries to make. Defaults to 3.
+- `:protocol` - HTTP protocol used when making a request
+- `:retry` - Module implementing a request retry strategy. Disabled when set
+  to `false`. Defaults to `false`.
+- `:retry_opts` - Options used to control the behavior of the retry module
+- `:revision` - Revision of the API endpoint
 
-## Supported Endpoint Functions
+## Retries
 
-**Server-Side**
+`klaviyo` has a built-in mechanism for retrying requests that either
+return an HTTP status code of 500 or a client error. You can enable retries
+by providing a module that implements the `Klaviyo.Retry` behaviour to the
+`:retry` option when calling `Klaviyo.send/2`.
 
-- `Klaviyo.identify/1`
-- `Klaviyo.track/1`
-- `Klaviyo.track_once/1`
+Currently, `klaviyo` provides a `Klaviyo.Retry.Linear` strategy for
+retrying requests. This strategy will automatically retry a request on a set
+interval. You can configure the interval by adding `:retry_in` with the number
+of milliseconds to wait before sending another request to the `:retry_opts`
+option.
 
-**Campaign**
+**Example**
 
-- `Klaviyo.Campaign.all/1`
-- `Klaviyo.Campaign.all_recipients/1`
-- `Klaviyo.Campaign.cancel/1`
-- `Klaviyo.Campaign.clone/2`
-- `Klaviyo.Campaign.create/1`
-- `Klaviyo.Campaign.get/1`
-- `Klaviyo.Campaign.schedule/2`
-- `Klaviyo.Campaign.send/1`
-- `Klaviyo.Campaign.update/2`
+```elixir
+iex> %Klaviyo.Event.all()
+      ...> |> Klaviyo.send(
+      ...>      api_key: "pk_xxx",
+      ...>      retry: Klaviyo.Retry.Linear,
+      ...>      retry_opts: [retry_in: 250],
+      ...>      revision: "2023-01-24"
+      ...>    )
+      {:ok, %Klaviyo.Response{}}
+```
 
-**List**
-
-- `Klaviyo.List.add_as_member/2`
-- `Klaviyo.List.add_as_subscriber/2`
-- `Klaviyo.List.all/0`
-- `Klaviyo.List.all_exclusions/2`
-- `Klaviyo.List.all_group_members/2`
-- `Klaviyo.List.create/1`
-- `Klaviyo.List.delete/1`
-- `Klaviyo.List.get/1`
-- `Klaviyo.List.get_memberships/2`
-- `Klaviyo.List.get_subscriptions/2`
-- `Klaviyo.List.remove_as_member/2`
-- `Klaviyo.List.remove_as_subscriber/2`
-- `Klaviyo.List.update/2`
-
-**Metric**
-
-- `Klaviyo.Metric.all/1`
-- `Klaviyo.Metric.export/2`
-- `Klaviyo.Metric.timeline/1`
-- `Klaviyo.Metric.timeline/2`
-
-**Person**
-
-- `Klaviyo.Person.exchange/1`
-- `Klaviyo.Person.get/1`
-- `Klaviyo.Person.search/1`
-- `Klaviyo.Person.timeline/2`
-- `Klaviyo.Person.timeline_for_metric/3`
-- `Klaviyo.Person.update/2`
-
-**Template**
-
-- `Klaviyo.Template.all/0`
-- `Klaviyo.Template.clone/2`
-- `Klaviyo.Template.create/1`
-- `Klaviyo.Template.delete/1`
-- `Klaviyo.Template.render/2`
-- `Klaviyo.Template.send/2`
-- `Klaviyo.Template.update/2`
+The example above would retry a failed request after 250 milliseconds. By
+default `Klaviyo.Retry.Linear` will retry a request immediately if
+`:retry_in` has no value
