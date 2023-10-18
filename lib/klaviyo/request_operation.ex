@@ -7,18 +7,19 @@ defmodule Klaviyo.RequestOperation do
   expected by an endpoint.
   """
 
-  alias Klaviyo.{HTTP}
+  alias Klaviyo.HTTP
 
   @type t ::
           %__MODULE__{
             body: Enum.t(),
-            encoding: :json,
+            encoding: :json | :www_form,
+            headers: HTTP.headers_t(),
             method: HTTP.method_t(),
             query: Enum.t(),
             path: String.t()
           }
 
-  defstruct body: [], encoding: :json, method: nil, query: [], path: nil
+  defstruct body: [], encoding: :json, headers: [], method: nil, query: [], path: nil
 
   @doc """
   Builds a URL string.

@@ -39,7 +39,7 @@ defmodule Klaviyo.Response do
   defp do_decode(response, opts) do
     content_type = HTTP.Response.get_header(response, "content-type")
 
-    if content_type != nil && content_type =~ "application/vnd.api+json" do
+    if content_type != nil && Regex.match?(~r/(\/|\+)json/, content_type) do
       opts.json_codec.decode!(response.body)
     else
       response.body
