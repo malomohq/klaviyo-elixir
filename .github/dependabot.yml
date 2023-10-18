@@ -8,7 +8,7 @@ updates:
       schedule:
           interval: daily
 
-      target-branch: master
+      target-branch: main
 
     - directory: "/"
 
@@ -17,4 +17,4 @@ updates:
       schedule:
           interval: daily
 
-      target-branch: master
+      target-branch: main
