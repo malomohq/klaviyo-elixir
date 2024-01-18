@@ -9,7 +9,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4.1.1
 
-            - uses: actions/cache@v3
+            - uses: actions/cache@v4
 
               with:
                   key: ${{ github.job }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles('mix.lock') }}-1
@@ -55,7 +55,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4.1.1
 
-            - uses: actions/cache@v3
+            - uses: actions/cache@v4
 
               with:
                   key: ${{ github.job }}-${{ matrix.elixir }}-${{ matrix.otp }}-${{ hashFiles('mix.lock') }}-1
