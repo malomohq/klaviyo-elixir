@@ -42,7 +42,8 @@ request and how it should behave.
 
 ### Options
 
-- `:api_key` Public or private Klaviyo API key
+- `:access_token` - OAuth2 access token
+- `:api_key` - Public or private Klaviyo API key
 - `:client` - HTTP client adapter used to make the request. Defaults to
   `Klaviyo.HTTP.Hackney`.
 - `:client_opts` - Configuration options passed to the client adapter
