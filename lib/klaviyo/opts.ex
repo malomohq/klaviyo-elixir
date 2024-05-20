@@ -7,6 +7,7 @@ defmodule Klaviyo.Opts do
 
   @type t ::
           %__MODULE__{
+            access_token: String.t(),
             api_key: String.t(),
             client: module,
             client_opts: keyword,
@@ -21,7 +22,8 @@ defmodule Klaviyo.Opts do
             revision: String.t()
           }
 
-  defstruct api_key: nil,
+  defstruct access_token: nil,
+            api_key: nil,
             client: HTTP.Hackney,
             client_opts: [],
             headers: [],

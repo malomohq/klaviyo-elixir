@@ -24,7 +24,7 @@ defmodule Klaviyo do
           RequestOperation.t(),
           keyword
         ) :: response_t
-  def send(operation, opts) do
+  def send(operation, opts \\ []) do
     opts = Opts.new(opts)
 
     request = Request.new(operation, opts)

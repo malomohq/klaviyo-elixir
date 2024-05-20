@@ -24,9 +24,9 @@ defmodule Klaviyo.RequestTest do
       opts = %Opts{api_key: api_key, host: host, port: port, revision: revision}
 
       headers = [
-        {"authorization", "Klaviyo-API-Key #{api_key}"},
         {"content-type", "application/json"},
-        {"revision", revision}
+        {"revision", revision},
+        {"authorization", "Klaviyo-API-Key #{api_key}"}
       ]
 
       url = RequestOperation.to_url(operation, opts)
