@@ -4,7 +4,7 @@ defmodule Klaviyo.MixProject do
   def project do
     [
       app: :klaviyo,
-      version: "3.1.0",
+      version: "3.2.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -23,6 +23,7 @@ defmodule Klaviyo.MixProject do
     [
       {:hackney, "~> 1.15", optional: true},
       {:jason, "~> 1.1", optional: true},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: :dev, runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:bypass, "~> 2.1", only: :test}

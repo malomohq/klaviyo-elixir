@@ -28,7 +28,7 @@ structs.
 iex> %Klaviyo.Event.all()
       ...> |> Klaviyo.send(
       ...>      api_key: "pk_xxx",
-      ...>      revision: "2023-01-24"
+      ...>      revision: "2026-01-15"
       ...>    )
       {:ok, %Klaviyo.Response{}}
 ```
@@ -56,7 +56,8 @@ request and how it should behave.
 - `:retry` - Module implementing a request retry strategy. Disabled when set
   to `false`. Defaults to `false`.
 - `:retry_opts` - Options used to control the behavior of the retry module
-- `:revision` - Revision of the API endpoint
+- `:revision` - Revision of the API endpoint. We recommend using the latest
+  stable revision, currently `2026-01-15`.
 
 ## Retries
 
@@ -79,7 +80,7 @@ iex> %Klaviyo.Event.all()
       ...>      api_key: "pk_xxx",
       ...>      retry: Klaviyo.Retry.Linear,
       ...>      retry_opts: [retry_in: 250],
-      ...>      revision: "2023-01-24"
+      ...>      revision: "2026-01-15"
       ...>    )
       {:ok, %Klaviyo.Response{}}
 ```

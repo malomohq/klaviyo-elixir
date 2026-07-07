@@ -24,7 +24,7 @@ defmodule Klaviyo.RequestTest do
       opts = %Opts{api_key: api_key, host: host, port: port, revision: revision}
 
       headers = [
-        {"content-type", "application/json"},
+        {"content-type", "application/vnd.api+json"},
         {"revision", revision},
         {"authorization", "Klaviyo-API-Key #{api_key}"}
       ]
@@ -39,6 +39,21 @@ defmodule Klaviyo.RequestTest do
       }
 
       assert expected == Request.new(operation, opts)
+    end
+
+    test "uses application/json when JSON encoding is explicitly requested" do
+      operation = %RequestOperation{
+        body: %{ok: true},
+        encoding: :json,
+        method: :post,
+        path: "/endpoint"
+      }
+
+      opts = %Opts{}
+
+      request = Request.new(operation, opts)
+
+      assert {"content-type", "application/json"} in request.headers
     end
   end
 end

@@ -12,14 +12,14 @@ defmodule Klaviyo.RequestOperation do
   @type t ::
           %__MODULE__{
             body: Enum.t(),
-            encoding: :json | :www_form,
+            encoding: :json | :json_api | :www_form,
             headers: HTTP.headers_t(),
             method: HTTP.method_t(),
             query: Enum.t(),
             path: String.t()
           }
 
-  defstruct body: [], encoding: :json, headers: [], method: nil, query: [], path: nil
+  defstruct body: [], encoding: :json_api, headers: [], method: nil, query: [], path: nil
 
   @doc """
   Builds a URL string.

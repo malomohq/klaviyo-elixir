@@ -55,6 +55,10 @@ defmodule Klaviyo.Request do
     opts.json_codec.encode!(Enum.into(body, %{}))
   end
 
+  def encode_body(body, :json_api, opts) do
+    encode_body(body, :json, opts)
+  end
+
   def encode_body(body, :www_form, _opts) do
     URI.encode_query(body, :www_form)
   end
@@ -62,6 +66,10 @@ defmodule Klaviyo.Request do
   @spec encoding(atom) :: String.t()
   def encoding(:json) do
     "application/json"
+  end
+
+  def encoding(:json_api) do
+    "application/vnd.api+json"
   end
 
   def encoding(:www_form) do
