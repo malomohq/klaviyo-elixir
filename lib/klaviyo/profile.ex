@@ -36,6 +36,15 @@ defmodule Klaviyo.Profile do
     }
   end
 
+  @spec bulk_unsubscribe(Enum.t()) :: RequestOperation.t()
+  def bulk_unsubscribe(params) do
+    %RequestOperation{
+      body: params,
+      method: :post,
+      path: "/api/profile-subscription-bulk-delete-jobs"
+    }
+  end
+
   @spec create(Enum.t()) :: RequestOperation.t()
   def create(params) do
     %RequestOperation{
