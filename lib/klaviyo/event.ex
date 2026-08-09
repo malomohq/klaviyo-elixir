@@ -36,6 +36,15 @@ defmodule Klaviyo.Event do
     }
   end
 
+  @spec bulk_create(Enum.t()) :: RequestOperation.t()
+  def bulk_create(params) do
+    %RequestOperation{
+      body: params,
+      method: :post,
+      path: "/api/event-bulk-create-jobs"
+    }
+  end
+
   @spec create(Enum.t()) :: RequestOperation.t()
   def create(params) do
     %RequestOperation{
